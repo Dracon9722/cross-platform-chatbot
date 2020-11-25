@@ -3,14 +3,14 @@ const kkbox = global.kkbox;
 const kkassistant = global.kkassistant
 
 const welcomeMessage = 'Hi~ \n\n' +
-    '您可以問我\n' +
+    '您可以輸入"Help"問我\n' +
     '音樂：「播放告白氣球」；「播放自傳專輯的歌」；「我要聽鄉村音樂」；「我要聽日文新歌」\n' + 
     '音樂活動：「查詢高雄的活動」；「查詢吳卓源的演場會」；「查詢兩廳院的表演」\n' +
     '影音內容：「查詢影片進擊的巨人」；「查詢日劇半澤直樹」\n';
 
 const HelpMessage = '功能\n' +
-    '輸入help顯示功能\n' +
-    '輸入recommender隨機推薦某歌手的歌\n';
+    '輸入"help"顯示功能\n' +
+    '輸入"隨機歌手"隨機推薦某歌手的歌\n';
 
 exports.HandleLineMessage = async context => {
     if (context.event.isText) {
@@ -99,7 +99,7 @@ exports.help = async context => {
                     action: {
                         type: 'message',
                         label: '隨機推薦某歌手的歌',
-                        text: 'recommender',
+                        text: '隨機歌手',
                     },
                 },
 
