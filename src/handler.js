@@ -81,7 +81,7 @@ exports.recommenderHandleLineMessage = async context => {
 
 
 exports.help = async context => {
-    await context.sendText(HelpMessage, {
+    await context.sendText(welcomeMessage, {
         quickReply: {
             items: [
                 {
@@ -99,7 +99,7 @@ exports.help = async context => {
                     action: {
                         type: 'message',
                         label: '隨機推薦某歌手的歌',
-                        text: '隨機歌手',
+                        text: '隨機Singer',
                     },
                 },
 
