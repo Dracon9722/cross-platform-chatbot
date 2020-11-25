@@ -4,7 +4,7 @@ const handler = require('./handler')
 exports.App = () => {
     return router([
         text(/^(hi|hello|)$/i, handler.HandleFollow),
-        text(/^(ÀH¾÷ºq¤â)$/i, handler.recommenderHandleLineMessage),
+        text(/^(recommender)$/i, handler.recommenderHandleLineMessage),
         text(/^(help)$/i, handler.help),
 
         line.message(handler.HandleLineMessage),

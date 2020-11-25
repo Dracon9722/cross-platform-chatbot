@@ -95,44 +95,8 @@ exports.help = async context => {
                     imageUrl: '',
                     action: {
                         type: 'message',
-                        label: '隨機推薦歌',
-                        text: 'recommend',
-                    },
-                },
-                {
-                    type: 'action',
-                    imageUrl: '',
-                    action: {
-                        type: 'message',
                         label: '隨機推薦某歌手的歌',
                         text: 'recommender',
-                    },
-                },
-                {
-                    type: 'action',
-                    imageUrl: '',
-                    action: {
-                        type: 'message',
-                        label: '本日熱門的歌',
-                        text: 'recentday',
-                    },
-                },
-                {
-                    type: 'action',
-                    imageUrl: '',
-                    action: {
-                        type: 'message',
-                        label: '本周熱門歌',
-                        text: 'recentweek',
-                    },
-                },
-                {
-                    type: 'action',
-                    imageUrl: '',
-                    action: {
-                        type: 'message',
-                        label: '今年度總排名',
-                        text: 'rank',
                     },
                 },
 
