@@ -8,6 +8,9 @@ const welcomeMessage = 'Hi~ \n\n' +
     '音樂活動：「查詢高雄的活動」；「查詢吳卓源的演場會」；「查詢兩廳院的表演」\n' +
     '影音內容：「查詢影片進擊的巨人」；「查詢日劇半澤直樹」\n';
 
+const HelpMessage = '功能\n' +
+    '輸入help顯示功能\n' +
+    '輸入recommender隨機推薦某歌手的歌\n';
 
 exports.HandleLineMessage = async context => {
     if (context.event.isText) {
