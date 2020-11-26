@@ -88,7 +88,7 @@ exports.recentday = async context => {
             {
                 type: 'uri',
                 label: '點擊查看',
-                uri: 'https://kma.kkbox.com/charts/daily/newrelease?terr=tw&lang=tc',
+                uri: 'https://kma.kkbox.com/charts/?terr=tw&lang=tc',
             },
         ],
     });
