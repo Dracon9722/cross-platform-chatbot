@@ -7,7 +7,7 @@ const welcomeMessage = 'Hi~ \n' +
 
 const HelpMessage = '功能\n' +
     '輸入"help"顯示功能\n' +
-    '輸入"隨機!"隨機推薦某歌手的歌\n' +
+    '輸入"redsinger"隨機推薦某歌手的歌\n' +
     '輸入"風~雲榜"風雲榜\n';
 
 exports.HandleLineMessage = async context => {
@@ -112,7 +112,7 @@ exports.help = async context => {
                     action: {
                         type: 'message',
                         label: '隨機推薦某歌手的歌',
-                        text: '隨機!',
+                        text: 'redsinger',
                     },
                 },
                 {
@@ -139,7 +139,7 @@ exports.help = async context => {
 }
 
 exports.HandleFollow = async context => {
-    await context.sendText(welcomeMessage);
+    await context.sendText(HelpMessage);
 }
 
 exports.HandleMessengerMessage = async context => {
