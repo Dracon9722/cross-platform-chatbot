@@ -2,18 +2,15 @@ const KKBOXMessage = require('./message/KKBOXMessage');
 const kkbox = global.kkbox;
 const kkassistant = global.kkassistant
 
-const welcomeMessage = 'Hi~ \n' +
-    '您可以問我\n' +
-    '輸入help顯示功能';
+const welcomeMessage = 'Hi~ +
+    '輸入"help"顯示多項功能';
 
 
 const HelpMessage = '功能\n' +
-    '輸入help顯示功能\n' +
-    '輸入recommend隨機推薦歌\n' +
-    '輸入recommender隨機推薦某歌手的歌\n';
-
-var status = "";
-var x;
+    '輸入"推薦的歌曲"將隨機推薦歌曲\n' +
+    '輸入"今日排行榜"顯示風雲榜今日排行\n' +
+    '輸入"本周排行榜"顯示風雲榜本周排行\n' +
+    '輸入"年度排行榜"顯示風雲榜年度排行\n';
 
 
 exports.HandleLineMessage = async context => {
@@ -42,6 +39,8 @@ exports.HandleLineMessage = async context => {
 }
 
 
+
+
 exports.help = async context => {
     await context.sendText(HelpMessage, {
         quickReply: {
@@ -51,7 +50,7 @@ exports.help = async context => {
                     imageUrl: '',
                     action: {
                         type: 'message',
-                        label: '顯示功能',
+                        label: '顯示多項功能',
                         text: 'help',
                     },
                 },
@@ -60,8 +59,8 @@ exports.help = async context => {
                     imageUrl: '',
                     action: {
                         type: 'message',
-                        label: '隨機推薦歌',
-                        text: 'recommend',
+                        label: '隨機推薦歌曲',
+                        text: '推薦的歌曲',
                     },
                 },
                 {
@@ -69,14 +68,28 @@ exports.help = async context => {
                     imageUrl: '',
                     action: {
                         type: 'message',
-                        label: '隨機推薦某歌手的歌',
-                        text: 'recommender',
+                        label: '本日熱門的歌',
+                        text: '今日排行榜',
                     },
                 },
-
-
-
-
+                {
+                    type: 'action',
+                    imageUrl: '',
+                    action: {
+                        type: 'message',
+                        label: '本周熱門歌',
+                        text: '本周排行榜',
+                    },
+                },
+                {
+                    type: 'action',
+                    imageUrl: '',
+                    action: {
+                        type: 'message',
+                        label: '年度總排名',
+                        text: '年度排行榜',
+                    },
+                },
             ],
         }
     }
@@ -87,150 +100,281 @@ exports.help = async context => {
     );
 }
 
-exports.recommenderHandleLineMessage = async context => {
-    if (context.event.isText) {
-        x = Math.floor(Math.random() * 10);
-        switch (x) {
-            case 0: status = "周興哲"; break;
-            case 1: status = "林俊傑"; break;
-            case 2: status = "周杰倫"; break;
-            case 3: status = "薛之謙"; break;
-            case 4: status = "陳奕迅"; break;
-            case 5: status = "華晨宇"; break;
-            case 6: status = "周筆暢"; break;
-            case 7: status = "田馥甄"; break;
-            case 8: status = "李榮浩"; break;
-            case 9: status = "張學友"; break;
-            default: status = "周杰倫"; break;
 
-        }
-
-        kkassistant.nlu(status, context.session.id)
-            .then(nluResp => {
-                if (nluResp.directives.length > 0) {
-                    if (nluResp.directives[0].type == 'AudioPlayer.Play') {
-                        return kkbox.fetchTracks(nluResp.directives[0].playlist.data);
-                    } else { // Event.Metadata & Video.Metadata
-                        return nluResp.directives[0];
-                    }
+exports.Fsong = async context => {
+    kkassistant.nlu(song[Math.floor(Math.random() * 23)], context.session.id)
+        .then(nluResp => {
+            if (nluResp.directives.length > 0) {
+                if (nluResp.directives[0].type == 'AudioPlayer.Play') {
+                    return kkbox.fetchTracks(nluResp.directives[0].playlist.data);
+                } else { // Event.Metadata & Video.Metadata
+                    return nluResp.directives[0];
                 }
-                else {
-                    console.error('Error: ', nluResp);
-                    context.sendText(nluResp.outputSpeech.text);
-                    throw new Error('KKBOX Assistant NLP Error');
-                }
-            })
-
-            .then(items => new KKBOXMessage(items).toLineMessage())
-            .then(({ altText, template }) => context.sendImageCarouselTemplate(altText, template))
-            .catch(error => {
-                console.error('Error: ', error);
-                quickReply: {
-                    items: [
-                        {
-                            type: 'action',
-                            imageUrl: '',
-                            action: {
-                                type: 'message',
-                                label: '顯示功能',
-                                text: 'help',
-                            },
-                        },
-                        {
-                            type: 'action',
-                            imageUrl: '',
-                            action: {
-                                type: 'message',
-                                label: '隨機推薦歌',
-                                text: 'recommend',
-                            },
-                        },
-                        {
-                            type: 'action',
-                            imageUrl: '',
-                            action: {
-                                type: 'message',
-                                label: '隨機推薦某歌手的歌',
-                                text: 'recommender',
-                            },
-                        },
-
-
-
-
-                    ],
-        }
-            });
-    }
+            }
+            else {
+                console.error('Error: ', nluResp);
+                context.sendText(nluResp.outputSpeech.text);
+                throw new Error('KKBOX Assistant NLP Error');
+            }
+        })
+        .then(items => new KKBOXMessage(items).toLineMessage())
+        .then(({ altText, template }) => context.sendImageCarouselTemplate(altText, template))
+        .catch(error => {
+            console.error('Error: ', error);
+        });
 }
 
+exports.recentweek = async context => {
+    await context.sendButtonsTemplate('想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。', {
+        thumbnailImageUrl: 'https://kma.kkbox.com/charts/assets/images/logo.svg?id=e41750806e78fa673556',
+        title: '本週單曲累積榜',
+        text: '想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。',
+        actions: [
 
-exports.recommendHandleLineMessage = async context => {
-    if (context.event.isText) {
-
-        kkassistant.nlu("風雲榜", context.session.id)
-            .then(nluResp => {
-                if (nluResp.directives.length > 0) {
-                    if (nluResp.directives[0].type == 'AudioPlayer.Play') {
-                        return kkbox.fetchTracks(nluResp.directives[0].playlist.data);
-                    } else { // Event.Metadata & Video.Metadata
-                        return nluResp.directives[0];
-                    }
-                }
-                else {
-                    console.error('Error: ', nluResp);
-                    context.sendText(nluResp.outputSpeech.text);
-                    throw new Error('KKBOX Assistant NLP Error');
-                }
-            })
-
-            .then(items => new KKBOXMessage(items).toLineMessage())
-            .then(({ altText, template }) => context.sendImageCarouselTemplate(altText, template))
-            .catch(error => {
-                console.error('Error: ', error);
-                quickReply: {
-                    items: [
-                        {
-                            type: 'action',
-                            imageUrl: '',
-                            action: {
-                                type: 'message',
-                                label: '顯示功能',
-                                text: 'help',
-                            },
+            {
+                type: 'uri',
+                label: '點擊查看',
+                uri: 'https://kma.kkbox.com/charts/weekly/newrelease?terr=tw&lang=tc',
+            },
+        ],
+    }, {
+            quickReply: {
+                items: [
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '顯示多項功能',
+                            text: 'help',
                         },
-                        {
-                            type: 'action',
-                            imageUrl: '',
-                            action: {
-                                type: 'message',
-                                label: '隨機推薦歌',
-                                text: 'recommend',
-                            },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '隨機推薦歌曲',
+                            text: '推薦的歌曲',
                         },
-                        {
-                            type: 'action',
-                            imageUrl: '',
-                            action: {
-                                type: 'message',
-                                label: '隨機推薦某歌手的歌',
-                                text: 'recommender',
-                            },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '本日熱門的歌',
+                            text: '今日排行榜',
                         },
-
-
-
-
-                    ],
-        }
-            });
-    }
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '本周熱門歌',
+                            text: '本周排行榜',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '年度總排名',
+                            text: '年度排行榜',
+                        },
+                    },
+                ],
+            }
+        });
 }
 
+exports.recentday = async context => {
+    await context.sendButtonsTemplate('想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。', {
+        thumbnailImageUrl: 'https://kma.kkbox.com/charts/assets/images/logo.svg?id=e41750806e78fa673556',
+        title: '今日單曲累積榜',
+        text: '想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。',
+        actions: [
 
+            {
+                type: 'uri',
+                label: '點擊查看',
+                uri: 'https://kma.kkbox.com/charts/daily/newrelease?terr=tw&lang=tc',
+            },
+        ],
+    }, {
+            quickReply: {
+                items: [
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '顯示多項功能',
+                            text: 'help',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '隨機推薦歌曲',
+                            text: '推薦的歌曲',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '本日熱門的歌',
+                            text: '今日排行榜',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '本周熱門歌',
+                            text: '本周排行榜',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '年度總排名',
+                            text: '年度排行榜',
+                        },
+                    },
+                ],
+            }
+        });
+}
+
+exports.rank = async context => {
+    await context.sendButtonsTemplate('想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。', {
+        thumbnailImageUrl: 'https://kma.kkbox.com/charts/assets/images/logo.svg?id=e41750806e78fa673556',
+        title: '年度單曲累積榜',
+        text: '想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。',
+        actions: [
+
+            {
+                type: 'uri',
+                label: '點擊查看',
+                uri: 'https://kma.kkbox.com/charts/yearly/newrelease?lang=tc&terr=tw',
+            },
+        ],
+    }, {
+            quickReply: {
+                items: [
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '顯示多項功能',
+                            text: 'help',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '隨機推薦歌曲',
+                            text: '推薦的歌曲',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '本日熱門的歌',
+                            text: '今日排行榜',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '本周熱門歌',
+                            text: '本周排行榜',
+                        },
+                    },
+                    {
+                        type: 'action',
+                        imageUrl: '',
+                        action: {
+                            type: 'message',
+                            label: '年度總排名',
+                            text: '年度排行榜',
+                        },
+                    },
+                ],
+            }
+        });
+}
 
 exports.HandleFollow = async context => {
-    await context.sendText(welcomeMessage);
+    await context.sendText(welcomeMessage, {
+        quickReply: {
+            items: [
+                {
+                    type: 'action',
+                    imageUrl: '',
+                    action: {
+                        type: 'message',
+                        label: '顯示多項功能',
+                        text: 'help',
+                    },
+                },
+                {
+                    type: 'action',
+                    imageUrl: '',
+                    action: {
+                        type: 'message',
+                        label: '隨機推薦歌曲',
+                        text: '推薦的歌曲',
+                    },
+                },
+                {
+                    type: 'action',
+                    imageUrl: '',
+                    action: {
+                        type: 'message',
+                        label: '本日熱門的歌',
+                        text: '今日排行榜',
+                    },
+                },
+                {
+                    type: 'action',
+                    imageUrl: '',
+                    action: {
+                        type: 'message',
+                        label: '本周熱門歌',
+                        text: '本周排行榜',
+                    },
+                },
+                {
+                    type: 'action',
+                    imageUrl: '',
+                    action: {
+                        type: 'message',
+                        label: '年度總排名',
+                        text: '年度排行榜',
+                    },
+                },
+            ],
+        }
+    }
+    );
 }
 
 exports.HandleMessengerMessage = async context => {
