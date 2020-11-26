@@ -10,10 +10,7 @@ const welcomeMessage = 'Hi~ \n' +
 const HelpMessage = '功能\n' +
     '輸入help顯示功能\n' +
     '輸入recommend隨機推薦歌\n' +
-    '輸入recommender隨機推薦某歌手的歌\n' +
-    '輸入recentday顯示本日熱門歌\n' +
-    '輸入recentweek顯示本周熱門歌\n' +
-    '輸入rank顯示今年度總排名';
+    '輸入recommender隨機推薦某歌手的歌\n';
 
 var status = "";
 var x;
@@ -45,55 +42,6 @@ exports.HandleLineMessage = async context => {
 }
 
 
-
-exports.rank = async context => {
-    await context.sendButtonsTemplate('想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。', {
-        thumbnailImageUrl: 'https://kma.kkbox.com/charts/assets/images/logo.svg?id=e41750806e78fa673556',
-        title: '年度單曲累積榜',
-        text: '想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。',
-        actions: [
-
-            {
-                type: 'uri',
-                label: '點擊查看',
-                uri: 'https://kma.kkbox.com/charts/yearly/newrelease?lang=tc&terr=tw',
-            },
-        ],
-    });
-}
-
-exports.recentweek = async context => {
-    await context.sendButtonsTemplate('想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。', {
-        thumbnailImageUrl: 'https://kma.kkbox.com/charts/assets/images/logo.svg?id=e41750806e78fa673556',
-        title: '本週單曲累積榜',
-        text: '想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。',
-        actions: [
-
-            {
-                type: 'uri',
-                label: '點擊查看',
-                uri: 'https://kma.kkbox.com/charts/weekly/newrelease?terr=tw&lang=tc',
-            },
-        ],
-    });
-}
-
-exports.recentday = async context => {
-    await context.sendButtonsTemplate('想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。', {
-        thumbnailImageUrl: 'https://kma.kkbox.com/charts/assets/images/logo.svg?id=e41750806e78fa673556',
-        title: '今日單曲累積榜',
-        text: '想知道最近火紅的歌曲有哪些嗎?快來 KKBOX 風雲榜。',
-        actions: [
-
-            {
-                type: 'uri',
-                label: '點擊查看',
-                uri: 'https://kma.kkbox.com/charts/?terr=tw&lang=tc',
-            },
-        ],
-    });
-}
-
 exports.help = async context => {
     await context.sendText(HelpMessage, {
         quickReply: {
@@ -123,33 +71,6 @@ exports.help = async context => {
                         type: 'message',
                         label: '隨機推薦某歌手的歌',
                         text: 'recommender',
-                    },
-                },
-                {
-                    type: 'action',
-                    imageUrl: '',
-                    action: {
-                        type: 'message',
-                        label: '本日熱門的歌',
-                        text: 'recentday',
-                    },
-                },
-                {
-                    type: 'action',
-                    imageUrl: '',
-                    action: {
-                        type: 'message',
-                        label: '本周熱門歌',
-                        text: 'recentweek',
-                    },
-                },
-                {
-                    type: 'action',
-                    imageUrl: '',
-                    action: {
-                        type: 'message',
-                        label: '今年度總排名',
-                        text: 'rank',
                     },
                 },
 
@@ -204,6 +125,41 @@ exports.recommenderHandleLineMessage = async context => {
             .then(({ altText, template }) => context.sendImageCarouselTemplate(altText, template))
             .catch(error => {
                 console.error('Error: ', error);
+                quickReply: {
+                    items: [
+                        {
+                            type: 'action',
+                            imageUrl: '',
+                            action: {
+                                type: 'message',
+                                label: '顯示功能',
+                                text: 'help',
+                            },
+                        },
+                        {
+                            type: 'action',
+                            imageUrl: '',
+                            action: {
+                                type: 'message',
+                                label: '隨機推薦歌',
+                                text: 'recommend',
+                            },
+                        },
+                        {
+                            type: 'action',
+                            imageUrl: '',
+                            action: {
+                                type: 'message',
+                                label: '隨機推薦某歌手的歌',
+                                text: 'recommender',
+                            },
+                        },
+
+
+
+
+                    ],
+        }
             });
     }
 }
@@ -232,6 +188,41 @@ exports.recommendHandleLineMessage = async context => {
             .then(({ altText, template }) => context.sendImageCarouselTemplate(altText, template))
             .catch(error => {
                 console.error('Error: ', error);
+                quickReply: {
+                    items: [
+                        {
+                            type: 'action',
+                            imageUrl: '',
+                            action: {
+                                type: 'message',
+                                label: '顯示功能',
+                                text: 'help',
+                            },
+                        },
+                        {
+                            type: 'action',
+                            imageUrl: '',
+                            action: {
+                                type: 'message',
+                                label: '隨機推薦歌',
+                                text: 'recommend',
+                            },
+                        },
+                        {
+                            type: 'action',
+                            imageUrl: '',
+                            action: {
+                                type: 'message',
+                                label: '隨機推薦某歌手的歌',
+                                text: 'recommender',
+                            },
+                        },
+
+
+
+
+                    ],
+        }
             });
     }
 }
