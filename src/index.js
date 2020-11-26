@@ -1,12 +1,19 @@
 const { router, text, line, messenger } = require('bottender/router');
 const handler = require('./handler')
 
+
 exports.App = () => {
     return router([
-        text(/^(hi|hello|)$/i, handler.HandleFollow),
-        text(/^(redsiger)$/i, handler.recommenderHandleLineMessage),
+        text(/^(hi|hello)$/i, handler.HandleFollow),
+        text(/^(rank)$/i, handler.rank),
         text(/^(help)$/i, handler.help),
-        text(/^(­·~¶³º])$/i, handler.recentday),
+        text(/^(recentweek)$/i, handler.recentweek),
+        text(/^(recentday)$/i, handler.recentday),
+        text(/^(recommender)$/i, handler.recommenderHandleLineMessage),
+        text(/^(recommend)$/i, handler.recommendHandleLineMessage),
+
+
+
 
         line.message(handler.HandleLineMessage),
         line.follow(handler.HandleFollow),
